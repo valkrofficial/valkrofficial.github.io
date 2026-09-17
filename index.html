@@ -1,20 +1,29 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<title>VALKR — Calisthenics, das mitdenkt</title>
+<title>VALKR — Calisthenics that thinks with you</title>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="VALKR ist die Calisthenics-App mit einem Plan, der sich deinem Level anpasst: flüssige Übungsanimationen, Trainingsmodus, Ernährung und Fortschritt. Bald im Play Store.">
+<meta name="description" content="VALKR is a calisthenics app with a plan that adapts to your level: smooth exercise animations, a training mode with a rest timer, nutrition and progress. Coming soon to the Play Store.">
 <meta name="theme-color" content="#000000">
 <link rel="icon" href="valkr-icon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://valkr.de/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="VALKR — Calisthenics, das mitdenkt">
-<meta property="og:description" content="Plan, der sich deinem Level anpasst. Bald im Play Store.">
+<meta property="og:title" content="VALKR — Calisthenics that thinks with you">
+<meta property="og:description" content="A plan that adapts to your level. Coming soon to the Play Store.">
 <meta property="og:image" content="https://valkr.de/img/feature-grafik.jpg">
 <meta property="og:url" content="https://valkr.de/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="de_DE">
 <!-- TikTok-Handle: das Konto heisst (Stand 2026-09-17) noch @valkroffical; @valkrofficial ist nicht
      vergeben. Nach der Umbenennung alle drei Links hier anpassen. -->
+<!-- Zweisprachig ohne zweite URL: Englisch steht im Quelltext (das liest der Crawler,
+     und das sieht, wer JavaScript aus hat), Deutsch haengt als data-de am selben
+     Element. Ein Klick tauscht die Texte, die Wahl liegt in localStorage -- eine
+     vom Besucher selbst ausgeloeste Spracheinstellung, technisch erforderlich,
+     keine Einwilligung noetig (§25 Abs. 2 TDDDG). Die Rechtstexte bleiben
+     deutsch: sie erfuellen deutsche Pflichten, eine Uebersetzung waere dort im
+     Zweifel die schlechtere Fassung. -->
 <!-- Startseite (Link in der TikTok-Bio). Bewusst ohne externe Schriften, Skripte,
      Tracking, Einbettungen oder Formulare: keine Einwilligung noetig. Schrift, Bilder
      und Video liegen auf derselben Domain. Die Warteliste kommt dazu, sobald der
@@ -44,6 +53,21 @@
   .brand svg{width:26px;height:26px}
   .klein{font-size:.85rem;font-weight:600;text-decoration:none;padding:.55rem .95rem;border-radius:999px;border:1px solid var(--line);color:var(--ink2)}
   .klein:hover{color:var(--ink);border-color:var(--ink3)}
+  .kopfEnde{display:flex;align-items:center;gap:.5rem}
+  /* Sprachumschalter: zwei Kuerzel in einer Pille, das aktive gefuellt. Ein
+     Knopf mit nur der ANDEREN Sprache waere kuerzer, laesst aber offen, ob er
+     den Zustand zeigt oder ihn aendert -- der haeufigste Fehlgriff bei
+     Sprachschaltern. Zwei Kuerzel beantworten beides auf einen Blick. */
+  .lang{display:flex;gap:2px;padding:3px;border-radius:999px;border:1px solid var(--line);background:var(--surf)}
+  .lang button{appearance:none;border:0;background:none;cursor:pointer;font-family:inherit;
+    font-weight:700;font-size:.78rem;line-height:1;letter-spacing:.06em;color:var(--ink3);
+    padding:.42rem .62rem;border-radius:999px;transition:background .16s,color .16s}
+  .lang button:hover{color:var(--ink2)}
+  .lang button[aria-pressed="true"]{background:var(--gold);color:#000}
+  @media (max-width:430px){
+    .klein{padding:.5rem .72rem;font-size:.8rem}
+    .lang button{padding:.42rem .5rem;font-size:.74rem}
+  }
   .hero{position:relative;overflow:hidden;padding:4.5rem 0 2rem;text-align:center}
   .eyebrow{display:inline-flex;align-items:center;gap:.5rem;margin:0;padding:.4rem .85rem;border-radius:999px;
     background:rgba(62,217,168,.1);color:var(--aurora);font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
@@ -99,11 +123,17 @@
 <body>
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="./" aria-label="VALKR Startseite">
+    <a class="brand" href="./" data-de-label="VALKR Startseite" aria-label="VALKR home">
       <svg viewBox="112 100 288 312" aria-hidden="true"><g fill="#E8BE51"><path d="M124 112 H388 V142 H124 Z"/><path d="M146 180 L256 400 L366 180 L310 180 L256 296 L198 180 Z"/></g></svg>
       VALKR
     </a>
-    <a class="klein" href="https://www.tiktok.com/@valkroffical" rel="noopener">TikTok</a>
+    <div class="kopfEnde">
+      <div class="lang" id="lang" role="group" aria-label="Language / Sprache">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="de" aria-pressed="false">DE</button>
+      </div>
+      <a class="klein" href="https://www.tiktok.com/@valkroffical" rel="noopener">TikTok</a>
+    </div>
   </div>
 </header>
 
@@ -111,60 +141,61 @@
   <section class="hero">
     <div class="glow" aria-hidden="true"></div>
     <div class="wrap">
-      <p class="eyebrow"><i aria-hidden="true"></i>Bald im Play Store · Android</p>
-      <h1>Calisthenics,<br><span>das mitdenkt.</span></h1>
-      <p class="lead">Ein Trainingsplan, der sich deinem Level anpasst. Flüssige Übungsanimationen, ein Trainingsmodus mit Pausenuhr, Ernährung und Fortschritt – in einer App.</p>
+      <p class="eyebrow"><i aria-hidden="true"></i><span data-de="Bald im Play Store · Android">Coming to the Play Store · Android</span></p>
+      <h1 data-de="Calisthenics,&lt;br&gt;&lt;span&gt;das mitdenkt.&lt;/span&gt;">Calisthenics,<br><span>that thinks with you.</span></h1>
+      <p class="lead" data-de="Ein Trainingsplan, der sich deinem Level anpasst. Flüssige Übungsanimationen, ein Trainingsmodus mit Pausenuhr, Ernährung und Fortschritt – in einer App.">A training plan that adapts to your level. Smooth exercise animations, a training mode with a rest timer, nutrition and progress – in one app.</p>
       <div class="ctas">
         <a class="btn gold" href="https://www.tiktok.com/@valkroffical" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 5.8A4.3 4.3 0 0 1 15.5 3h-3.1v12.4a2.6 2.6 0 1 1-2.6-2.6c.3 0 .5 0 .8.1V9.7a5.8 5.8 0 1 0 5 5.7V9.1a7.3 7.3 0 0 0 4.3 1.4V7.4a4.3 4.3 0 0 1-3.3-1.6Z"/></svg>
-          Launch auf TikTok verfolgen</a>
-        <a class="btn leise" href="#funktionen">Was die App kann</a>
+          <span data-de="Launch auf TikTok verfolgen">Follow the launch on TikTok</span></a>
+        <a class="btn leise" href="#funktionen" data-de="Was die App kann">What the app does</a>
       </div>
       <div class="film">
         <video src="img/valkr-promo.mp4" poster="img/promo-poster.jpg" autoplay muted loop playsinline preload="metadata"
-          aria-label="Bildschirmaufnahme der VALKR-App: Tagesübersicht mit Ringen, Übungsanimation, Trainingsmodus mit Rekord, Ränge und Wochenkarte"></video>
+          data-de-label="Bildschirmaufnahme der VALKR-App: Tagesübersicht mit Ringen, Übungsanimation, Trainingsmodus mit Rekord, Ränge und Wochenkarte"
+          aria-label="Screen recording of the VALKR app: today view with activity rings, exercise animation, training mode with a personal record, ranks and the week card"></video>
       </div>
-      <p class="kennz">Echte Bildschirmaufnahme der App · Beispieldarstellung mit Demo-Profil</p>
+      <p class="kennz" data-de="Echte Bildschirmaufnahme der App · Beispieldarstellung mit Demo-Profil">Real screen recording of the app · Sample display using a demo profile</p>
     </div>
   </section>
 
   <section id="funktionen">
     <div class="wrap">
-      <h2>Alles fürs Training.<br>Nichts, was stört.</h2>
-      <p class="unter">Heute, Trainingsmodus, Übungen, Ränge, Wochenkarte und Ernährung – so sieht VALKR aus.</p>
-      <div class="schiene" tabindex="0" aria-label="Bilder der App, seitlich wischen">
-        <img src="img/01-heute.jpg" width="540" height="960" loading="lazy" alt="Heute: Aktivitätsringe für Training, Kalorien und Schritte, Tagesform und Serie">
-        <img src="img/02-vorschau.jpg" width="540" height="960" loading="lazy" alt="Übungs-Vorschau: große Bewegungsanimation mit Zeitlupe">
-        <img src="img/03-training.jpg" width="540" height="960" loading="lazy" alt="Trainingsmodus: Sätze mit Vergleich zum letzten Mal und Rekord-Hinweis">
-        <img src="img/04-raenge.jpg" width="540" height="960" loading="lazy" alt="Ränge: Rangabzeichen mit Fortschrittsbalken">
-        <img src="img/05-wochenkarte.jpg" width="540" height="960" loading="lazy" alt="Wochenkarte: die Trainingswoche als teilbares Bild">
-        <img src="img/06-ernaehrung.jpg" width="540" height="960" loading="lazy" alt="Ernährung: Kalorienring mit Makros">
+      <h2 data-de="Alles fürs Training.&lt;br&gt;Nichts, was stört.">Everything for training.<br>Nothing in the way.</h2>
+      <p class="unter" data-de="Heute, Trainingsmodus, Übungen, Ränge, Wochenkarte und Ernährung – so sieht VALKR aus.">Today, training mode, exercises, ranks, the week card and nutrition – this is what VALKR looks like.</p>
+      <div class="schiene" tabindex="0" data-de-label="Bilder der App, seitlich wischen" aria-label="App screenshots, swipe sideways">
+        <img src="img/01-heute.jpg" width="540" height="960" loading="lazy" data-de-alt="Heute: Aktivitätsringe für Training, Kalorien und Schritte, Tagesform und Serie" alt="Today: activity rings for training, calories and steps, readiness and streak">
+        <img src="img/02-vorschau.jpg" width="540" height="960" loading="lazy" data-de-alt="Übungs-Vorschau: große Bewegungsanimation mit Zeitlupe" alt="Exercise preview: large movement animation with slow motion">
+        <img src="img/03-training.jpg" width="540" height="960" loading="lazy" data-de-alt="Trainingsmodus: Sätze mit Vergleich zum letzten Mal und Rekord-Hinweis" alt="Training mode: sets compared with last time, with a record notice">
+        <img src="img/04-raenge.jpg" width="540" height="960" loading="lazy" data-de-alt="Ränge: Rangabzeichen mit Fortschrittsbalken" alt="Ranks: rank badges with progress bars">
+        <img src="img/05-wochenkarte.jpg" width="540" height="960" loading="lazy" data-de-alt="Wochenkarte: die Trainingswoche als teilbares Bild" alt="Week card: your training week as a shareable image">
+        <img src="img/06-ernaehrung.jpg" width="540" height="960" loading="lazy" data-de-alt="Ernährung: Kalorienring mit Makros" alt="Nutrition: calorie ring with macros">
       </div>
-      <p class="unter" style="font-size:.85rem;color:var(--ink3)">Alle Bilder: Beispieldarstellung mit Demo-Profil.</p>
+      <p class="unter" style="font-size:.85rem;color:var(--ink3)" data-de="Alle Bilder: Beispieldarstellung mit Demo-Profil.">All images: sample display using a demo profile.</p>
     </div>
   </section>
 
   <section>
     <div class="wrap">
-      <h2>So läuft’s.</h2>
+      <h2 data-de="So läuft’s.">How it works.</h2>
       <div class="schritte">
-        <div class="karte"><b>1</b><h3>Level einmessen</h3><p>Deine erste Einheit misst, wo du stehst. Keine Tabelle, kein Raten.</p></div>
-        <div class="karte"><b>2</b><h3>Plan passt sich an</h3><p>Wiederholungen, Stufen und Pausen richten sich nach deinen echten Sätzen.</p></div>
-        <div class="karte"><b>3</b><h3>Fortschritt sehen</h3><p>Ränge, Rekorde und deine Woche als Karte – zum Teilen mit einem Tipp.</p></div>
+        <div class="karte"><b>1</b><h3 data-de="Level einmessen">Measure your level</h3><p data-de="Deine erste Einheit misst, wo du stehst. Keine Tabelle, kein Raten.">Your first session measures where you are. No spreadsheet, no guessing.</p></div>
+        <div class="karte"><b>2</b><h3 data-de="Plan passt sich an">The plan adapts</h3><p data-de="Wiederholungen, Stufen und Pausen richten sich nach deinen echten Sätzen.">Reps, progressions and rest follow the sets you actually did.</p></div>
+        <div class="karte"><b>3</b><h3 data-de="Fortschritt sehen">See the progress</h3><p data-de="Ränge, Rekorde und deine Woche als Karte – zum Teilen mit einem Tipp.">Ranks, records and your week as a card – shareable with one tap.</p></div>
       </div>
     </div>
   </section>
 
   <section>
     <div class="wrap">
-      <h2>Ehrlich gebaut.</h2>
+      <h2 data-de="Ehrlich gebaut.">Built honestly.</h2>
       <ul class="ehrlich">
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>
-          <div><strong>Ohne Konto</strong><span>Installieren, Ziel wählen, loslegen.</span></div></li>
+          <div><strong data-de="Ohne Konto">No account</strong><span data-de="Installieren, Ziel wählen, loslegen.">Install it, pick a goal, start.</span></div></li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>
-          <div><strong>Deine Daten bleiben auf deinem Handy</strong><span>Training, Ernährung und Fotos werden auf dem Gerät gespeichert.</span></div></li>
+          <div><strong data-de="Deine Daten bleiben auf deinem Handy">Your data stays on your phone</strong><span data-de="Training, Ernährung und Fotos werden auf dem Gerät gespeichert.">Training, nutrition and photos are stored on the device.</span></div></li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>
-          <div><strong>Mit deiner Uhr, wenn du willst</strong><span>Schritte, Schlaf und Ruhepuls über Health Connect – nur mit deiner Zustimmung.</span></div></li>
+          <div><strong data-de="Mit deiner Uhr, wenn du willst">With your watch, if you want</strong><span data-de="Schritte, Schlaf und Ruhepuls über Health Connect – nur mit deiner Zustimmung.">Steps, sleep and resting heart rate via Health Connect – only with your consent.</span></div></li>
       </ul>
     </div>
   </section>
@@ -172,12 +203,12 @@
   <section class="schluss">
     <div class="glow" aria-hidden="true"></div>
     <div class="wrap">
-      <h2>Sei beim Launch dabei.</h2>
-      <p class="unter">Neuigkeiten, Einblicke in die Entwicklung und der Starttermin kommen zuerst auf TikTok.</p>
+      <h2 data-de="Sei beim Launch dabei.">Be there at launch.</h2>
+      <p class="unter" data-de="Neuigkeiten, Einblicke in die Entwicklung und der Starttermin kommen zuerst auf TikTok.">News, build updates and the release date go to TikTok first.</p>
       <div class="ctas">
-        <a class="btn gold" href="https://www.tiktok.com/@valkroffical" rel="noopener">Auf TikTok folgen</a>
+        <a class="btn gold" href="https://www.tiktok.com/@valkroffical" rel="noopener" data-de="Auf TikTok folgen">Follow on TikTok</a>
       </div>
-      <p class="klein2">Eine Warteliste per E-Mail folgt in Kürze.</p>
+      <p class="klein2" data-de="Eine Warteliste per E-Mail folgt in Kürze.">An email waiting list is coming shortly.</p>
     </div>
   </section>
 </main>
@@ -185,8 +216,57 @@
 <footer>
   <div class="wrap">
     <span>© VALKR</span>
-    <nav><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></nav>
+    <nav><a href="impressum.html" data-de="Impressum">Imprint (German)</a><a href="datenschutz.html" data-de="Datenschutz">Privacy (German)</a></nav>
   </div>
 </footer>
+
+<script>
+/* Sprachumschalter. Englisch steht im Markup, Deutsch in data-de (Text bzw.
+   innerHTML, wenn Zeilenumbrueche drinstecken), data-de-alt und data-de-label.
+   Beim Umschalten wird die englische Fassung einmalig in data-en gesichert --
+   so bleibt der Weg zurueck verlustfrei, ohne die Texte doppelt ins HTML zu
+   schreiben. Faellt das Skript aus, steht die Seite vollstaendig auf Englisch. */
+(function(){
+  var SP='valkr_lang', wurzel=document.documentElement, knoepfe=document.querySelectorAll('#lang button');
+  var TITEL={en:document.title,de:'VALKR — Calisthenics, das mitdenkt'};
+  /* Seitentitel und Kurzbeschreibung gehoeren zur Sprache wie der Fliesstext --
+     sie stehen im Browser-Tab und in jeder geteilten Vorschau. */
+  var BESCHR={en:(document.querySelector('meta[name=description]')||{}).content||'',
+    de:'VALKR ist die Calisthenics-App mit einem Plan, der sich deinem Level anpasst: flüssige Übungsanimationen, Trainingsmodus mit Pausenuhr, Ernährung und Fortschritt. Bald im Play Store.'};
+  function sichern(el,attr,wert){
+    if(el.getAttribute(attr)===null)el.setAttribute(attr,wert);
+  }
+  function setzen(l){
+    var de=l==='de';
+    wurzel.lang=de?'de':'en';
+    document.title=TITEL[de?'de':'en'];
+    var md=document.querySelector('meta[name=description]');
+    if(md)md.content=BESCHR[de?'de':'en'];
+    [].forEach.call(document.querySelectorAll('[data-de]'),function(el){
+      sichern(el,'data-en',el.innerHTML);
+      el.innerHTML=de?el.getAttribute('data-de'):el.getAttribute('data-en');
+    });
+    [].forEach.call(document.querySelectorAll('[data-de-alt]'),function(el){
+      sichern(el,'data-en-alt',el.getAttribute('alt')||'');
+      el.setAttribute('alt',de?el.getAttribute('data-de-alt'):el.getAttribute('data-en-alt'));
+    });
+    [].forEach.call(document.querySelectorAll('[data-de-label]'),function(el){
+      sichern(el,'data-en-label',el.getAttribute('aria-label')||'');
+      el.setAttribute('aria-label',de?el.getAttribute('data-de-label'):el.getAttribute('data-en-label'));
+    });
+    [].forEach.call(knoepfe,function(b){b.setAttribute('aria-pressed',String(b.dataset.lang===(de?'de':'en')));});
+    try{localStorage.setItem(SP,de?'de':'en');}catch(e){}
+  }
+  [].forEach.call(knoepfe,function(b){
+    b.addEventListener('click',function(){setzen(b.dataset.lang);});
+  });
+  /* Nur eine zuvor GEWAEHLTE Sprache wird wiederhergestellt. Die Browsersprache
+     zu erraten waere hier falsch: die Seite ist bewusst englisch als Standard,
+     und ein automatischer Wechsel liesse den Umschalter aussehen, als haette er
+     nicht funktioniert. */
+  var w=null;try{w=localStorage.getItem(SP);}catch(e){}
+  if(w==='de')setzen('de');
+})();
+</script>
 </body>
 </html>
