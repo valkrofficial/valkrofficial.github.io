@@ -260,12 +260,44 @@
   [].forEach.call(knoepfe,function(b){
     b.addEventListener('click',function(){setzen(b.dataset.lang);});
   });
-  /* Nur eine zuvor GEWAEHLTE Sprache wird wiederhergestellt. Die Browsersprache
-     zu erraten waere hier falsch: die Seite ist bewusst englisch als Standard,
-     und ein automatischer Wechsel liesse den Umschalter aussehen, als haette er
-     nicht funktioniert. */
+  /* Eine frueher getroffene Wahl gewinnt immer -- wer einmal auf EN gestellt
+     hat, bekommt EN, auch mit deutschem Browser. Erst wenn es keine gibt,
+     entscheidet die Browsersprache.
+
+     Englisch bleibt die Fassung IM Quelltext: das ist, was Crawler lesen, was
+     ohne JavaScript steht und was die Seite ist, wenn man nichts ueber den
+     Besucher weiss. Die Umschaltung auf Deutsch passiert erst danach, im
+     Browser des Besuchers. Der Grund fuer den Vorgriff ist praktisch: der Weg
+     hierher fuehrt ueber ein TikTok-Konto mit gut zehntausend ueberwiegend
+     deutschsprachigen Followern. Wer dort klickt, soll nicht erst einen
+     Schalter suchen muessen.
+
+     navigator.languages statt navigator.language: der erste Eintrag ist die
+     bevorzugte Sprache, aber ein Geraet kann mehrere fuehren, und manche
+     Browser liefern in language nur die Oberflaechensprache. Geprueft wird auf
+     das Praefix "de" -- de-DE, de-AT, de-CH sollen alle Deutsch bekommen. */
   var w=null;try{w=localStorage.getItem(SP);}catch(e){}
-  if(w==='de')setzen('de');
+  if(w==='de'||w==='en')setzen(w);
+  else{
+    var sp=(navigator.languages&&navigator.languages.length)?navigator.languages:[navigator.language||''];
+    var de=false;
+    for(var q=0;q<sp.length;q++){
+      var l=String(sp[q]||'').toLowerCase();
+      if(l.indexOf('de')===0){de=true;break;}
+      /* Beim ERSTEN eindeutigen Treffer aufhoeren: ein Geraet mit
+         ["en-US","de-DE"] bevorzugt Englisch, und das ist zu respektieren. */
+      if(l.indexOf('en')===0)break;
+    }
+    /* Die Vorauswahl wird NICHT gespeichert. Sonst haette der Besucher eine
+       Wahl getroffen, die er nie getroffen hat -- und ein spaeterer Wechsel der
+       Browsersprache wuerde ignoriert. Gespeichert wird nur, was jemand
+       tatsaechlich anklickt. */
+    if(de){
+      var merk=null;try{merk=localStorage.getItem(SP);}catch(e){}
+      setzen('de');
+      try{if(merk===null)localStorage.removeItem(SP);}catch(e){}
+    }
+  }
 })();
 </script>
 </body>
