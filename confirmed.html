@@ -24,6 +24,13 @@
   .card{margin:1.8rem 0 0;padding:1.1rem 1.2rem;border:1px solid #2A2618;border-radius:18px;background:#0B0B0A;text-align:left;width:100%}
   .card b{color:var(--ink)}
   .card p{margin:.4rem 0 0;font-size:.95rem}
+  /* Der Knopf ist der Grund, warum diese Seite mehr als eine Bestaetigung ist.
+     Er steht deshalb vor den Versprechen, nicht darunter. */
+  a.pdf{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+    margin-top:1.6rem;min-height:52px;padding:0 1.6rem;border-radius:999px;
+    background:var(--gold,#E8BE51);color:#000;text-decoration:none;
+    font-weight:700;font-size:1rem}
+  a.pdf:hover{filter:brightness(1.08)}
   a.back{margin-top:1.8rem;color:var(--ink2);text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
   footer{border-top:1px solid var(--line);padding:1rem 1.2rem max(1.2rem,env(safe-area-inset-bottom));display:flex;justify-content:center;gap:1.6rem;font-size:.85rem}
   footer a{color:var(--ink2);text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
@@ -36,7 +43,8 @@
     <g fill="url(#g)"><path d="M124 112 H388 V142 H124 Z"/><path d="M146 180 L256 400 L366 180 L310 180 L256 296 L198 180 Z"/></g></svg>
   <p class="eyebrow" data-de="BESTÄTIGT">CONFIRMED</p>
   <h1 data-de="Du bist dabei.">You're in.</h1>
-  <p data-de="Dein Platz auf der VALKR-Warteliste steht. Dein Level-Test ist gerade unterwegs in dein Postfach.">Your spot on the VALKR waitlist is confirmed. Your free Level Test is on its way to your inbox right now.</p>
+  <p data-de="Dein Platz auf der VALKR-Warteliste steht. Hier ist dein Level-Test — vier Tests, zwanzig Minuten, ein ehrlicher Startpunkt.">Your spot on the VALKR waitlist is confirmed. Here is your Level Test — four tests, twenty minutes, one honest starting point.</p>
+  <a class="pdf" href="downloads/VALKR-Level-Test.pdf" download data-de="Level-Test herunterladen (PDF)">Download the Level Test (PDF)</a>
   <div class="card">
     <p data-de="&lt;b&gt;Frühzugang&lt;/b&gt; — du hörst 48 Stunden vor allen anderen von uns."><b>Early access</b> — you hear from us 48 hours before everyone else.</p>
     <p data-de="&lt;b&gt;Gründerpreis&lt;/b&gt; — nur für die Warteliste."><b>Founding price</b> — reserved for the waitlist.</p>
