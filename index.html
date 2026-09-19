@@ -118,6 +118,39 @@
   footer a{text-decoration:none;color:var(--ink2);min-height:44px;display:inline-flex;align-items:center}
   footer a:hover{color:var(--ink)}
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.eyebrow i{animation:none}}
+/* Das Formular steht im Hero, zwischen Lead-Text und den Knöpfen. Es ist das
+     Wichtigste auf der Seite -- alles andere (Video, Bilder, "So läuft's") kann
+     man danach lesen, das hier soll man tun. */
+  #wl{max-width:30rem;margin:1.9rem auto 0;text-align:left}
+  .wlRow{display:flex;gap:.5rem;flex-wrap:wrap}
+  #wlmail{flex:1;min-width:12rem;min-height:54px;padding:0 1.1rem;border-radius:999px;
+    border:1px solid var(--line);background:var(--surf);color:var(--ink);
+    font-family:inherit;font-size:1rem;-webkit-appearance:none}
+  #wlmail::placeholder{color:var(--ink3)}
+  #wlmail:focus{outline:none;border-color:var(--gold)}
+  #wlbtn{min-height:54px;flex:none;white-space:nowrap}
+  #wlbtn:disabled{opacity:.6;cursor:default}
+  /* Das Häkchen ist NICHT vorausgewählt und nicht versteckt: eine Einwilligung,
+     die man nicht gesetzt hat, ist keine. Klein darf sie sein, unsichtbar nicht. */
+  .wlOk{display:flex;gap:.6rem;align-items:flex-start;margin:.8rem .2rem 0;
+    font-size:.76rem;line-height:1.45;color:var(--ink3);cursor:pointer}
+  .wlOk input{flex:none;width:19px;height:19px;margin:1px 0 0;accent-color:var(--gold);cursor:pointer}
+  .wlOk a{color:var(--ink2)}
+  .wlStatus{margin:.7rem .2rem 0;font-size:.88rem;min-height:1.1em}
+  .wlStatus.ok{color:var(--aurora)}
+  .wlStatus.err{color:#E8825A}
+  .wlHp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+  /* Die drei Versprechen als eine Zeile, nicht als Liste untereinander --
+     im Hero zählt jede Zeile doppelt. Auf schmalen Geräten bricht sie um. */
+  .wlVor{list-style:none;margin:1.1rem 0 0;padding:0;display:flex;flex-wrap:wrap;
+    gap:.35rem 1.1rem;justify-content:center;font-size:.82rem;color:var(--ink3)}
+  .wlVor li{display:flex;align-items:center;gap:.4rem}
+  .wlVor li:before{content:"";width:5px;height:5px;border-radius:50%;background:var(--gold);flex:none}
+  .wlVor b{color:var(--ink2);font-weight:600}
+  @media (max-width:430px){
+    #wlbtn{width:100%}
+    .wlVor{font-size:.78rem;gap:.3rem .8rem}
+  }
 </style>
 </head>
 <body>
@@ -144,6 +177,27 @@
       <p class="eyebrow"><i aria-hidden="true"></i><span data-de="Bald im Play Store · Android">Coming to the Play Store · Android</span></p>
       <h1 data-de="Calisthenics,&lt;br&gt;&lt;span&gt;das mitdenkt.&lt;/span&gt;">Calisthenics,<br><span>that thinks with you.</span></h1>
       <p class="lead" data-de="Ein Trainingsplan, der sich deinem Level anpasst. Flüssige Übungsanimationen, ein Trainingsmodus mit Pausenuhr, Ernährung und Fortschritt – in einer App.">A training plan that adapts to your level. Smooth exercise animations, a training mode with a rest timer, nutrition and progress – in one app.</p>
+<form id="wl" novalidate>
+    <!-- Honigtopf: ein Feld, das kein Mensch sieht und jeder Bot ausfüllt.
+         Billiger als ein CAPTCHA und ohne fremden Dienst. -->
+    <label class="wlHp" aria-hidden="true">Leave empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+    <div class="wlRow">
+      <input type="email" name="email" id="wlmail" autocomplete="email" inputmode="email" required
+        data-de-ph="Deine E-Mail-Adresse" placeholder="Your email address"
+        data-de-label="E-Mail-Adresse" aria-label="Email address">
+      <button type="submit" id="wlbtn" class="btn gold" data-de="Auf die Warteliste">Join the waitlist</button>
+    </div>
+    <label class="wlOk">
+      <input type="checkbox" name="consent" id="wlok" required>
+      <span data-de="Ja, schreibt mir zum Start von VALKR und gelegentlich Neuigkeiten (höchstens 2 im Monat), und messt dabei Öffnungen und Klicks. Ich bin mindestens 16. Ich kann mich jederzeit abmelden. Einzelheiten in der &lt;a href=&quot;datenschutz.html&quot;&gt;Datenschutzerklärung&lt;/a&gt;.">Yes, email me when VALKR launches, plus occasional updates (max. 2 per month), and measure opens and clicks. I am at least 16. I can unsubscribe at any time. Details in the <a href="datenschutz.html">privacy policy</a>.</span>
+    </label>
+    <p class="wlStatus" id="wlstatus" role="status" aria-live="polite"></p>
+    <ul class="wlVor">
+      <li data-de="&lt;b&gt;48 Stunden früher&lt;/b&gt; als alle anderen"><b>48 hours early</b>, before anyone else</li>
+      <li data-de="&lt;b&gt;Gründerpreis&lt;/b&gt;, nur für die Liste"><b>Founding price</b>, waitlist only</li>
+      <li data-de="&lt;b&gt;Level-Test gratis&lt;/b&gt;, sofort nach dem Bestätigen"><b>Free level test</b>, right after you confirm</li>
+    </ul>
+  </form>
       <div class="ctas">
         <a class="btn gold" href="https://www.tiktok.com/@valkroffical" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 5.8A4.3 4.3 0 0 1 15.5 3h-3.1v12.4a2.6 2.6 0 1 1-2.6-2.6c.3 0 .5 0 .8.1V9.7a5.8 5.8 0 1 0 5 5.7V9.1a7.3 7.3 0 0 0 4.3 1.4V7.4a4.3 4.3 0 0 1-3.3-1.6Z"/></svg>
@@ -208,7 +262,6 @@
       <div class="ctas">
         <a class="btn gold" href="https://www.tiktok.com/@valkroffical" rel="noopener" data-de="Auf TikTok folgen">Follow on TikTok</a>
       </div>
-      <p class="klein2" data-de="Eine Warteliste per E-Mail folgt in Kürze.">An email waiting list is coming shortly.</p>
     </div>
   </section>
 </main>
@@ -226,6 +279,41 @@
    Beim Umschalten wird die englische Fassung einmalig in data-en gesichert --
    so bleibt der Weg zurueck verlustfrei, ohne die Texte doppelt ins HTML zu
    schreiben. Faellt das Skript aus, steht die Seite vollstaendig auf Englisch. */
+/* Warteliste. Die Adresse geht direkt an den Newsletter-Anbieter, der die
+   Bestätigungs-Mail (Double-Opt-in) verschickt und die Einwilligung
+   protokolliert. Auf valkr.de wird nichts gespeichert und nichts geloggt.
+   HIER DEN ENDPUNKT EINTRAGEN (Brevo: beginnt mit https://…sibforms.com/serve/…). */
+var WAITLIST={endpoint:"https://fc7319c6.sibforms.com/serve/MUIFAOUG5Z7QwLbaF25kWWij9KA7AlBpLRRR4f7hHci0Kj_SXZKRmVCH1f7uhAHKwjD3CsqItL2rLc2QhBwTw15m0sSf9fAZA2rAP1mmu65ue1div61mLHld6YImWqWqyCXcO_NpaAwJXvJrfyIw63iPjJDKafQjNQw_6dWZyqhGZg-rIErpeXDPstCUOaP4CmnzHSV5wAY_fkaqlQ",emailField:'EMAIL',extra:{}};
+(function(){
+  var f=document.getElementById('wl');if(!f)return;
+  var m=document.getElementById('wlmail'),ok=document.getElementById('wlok'),
+      b=document.getElementById('wlbtn'),st=document.getElementById('wlstatus');
+  var T={
+    mail:['Please enter a valid email address.','Bitte gib eine gültige E-Mail-Adresse ein.'],
+    hak: ['Please tick the box so we are allowed to email you.','Bitte setz das Häkchen, damit wir dir schreiben dürfen.'],
+    zu:  ['The waitlist opens shortly — come back soon.','Die Warteliste öffnet in Kürze — schau gleich noch mal vorbei.'],
+    send:['Sending…','Wird gesendet…'],
+    gut: ['Almost done — check your inbox and confirm your email.','Fast geschafft — bestätige die E-Mail in deinem Postfach.'],
+    weg: ['That did not work. Please try again in a moment.','Das hat nicht geklappt. Bitte versuch es gleich noch einmal.']
+  };
+  function t(k){return T[k][document.documentElement.lang==='de'?1:0];}
+  function say(txt,cls){st.textContent=txt;st.className='wlStatus'+(cls?' '+cls:'');}
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(f.website.value)return;           /* Bot */
+    var v=m.value.trim();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){say(t('mail'),'err');m.focus();return;}
+    if(!ok.checked){say(t('hak'),'err');ok.focus();return;}
+    if(!WAITLIST.endpoint){say(t('zu'),'err');return;}
+    var fd=new FormData();fd.append(WAITLIST.emailField,v);
+    for(var k in WAITLIST.extra)fd.append(k,WAITLIST.extra[k]);
+    b.disabled=true;say(t('send'));
+    fetch(WAITLIST.endpoint,{method:'POST',body:fd,mode:'no-cors'})
+      .then(function(){f.reset();say(t('gut'),'ok');})
+      .catch(function(){say(t('weg'),'err');})
+      .then(function(){b.disabled=false;});
+  });
+})();
 (function(){
   var SP='valkr_lang', wurzel=document.documentElement, knoepfe=document.querySelectorAll('#lang button');
   var TITEL={en:document.title,de:'VALKR — Calisthenics, das mitdenkt'};
@@ -245,6 +333,10 @@
     [].forEach.call(document.querySelectorAll('[data-de]'),function(el){
       sichern(el,'data-en',el.innerHTML);
       el.innerHTML=de?el.getAttribute('data-de'):el.getAttribute('data-en');
+    });
+    [].forEach.call(document.querySelectorAll('[data-de-ph]'),function(el){
+      sichern(el,'data-en-ph',el.getAttribute('placeholder')||'');
+      el.setAttribute('placeholder',de?el.getAttribute('data-de-ph'):el.getAttribute('data-en-ph'));
     });
     [].forEach.call(document.querySelectorAll('[data-de-alt]'),function(el){
       sichern(el,'data-en-alt',el.getAttribute('alt')||'');
