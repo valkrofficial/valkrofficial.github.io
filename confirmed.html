@@ -34,19 +34,47 @@
   <svg viewBox="112 100 288 312" role="img" aria-label="VALKR"><defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="124" y1="112" x2="388" y2="400">
     <stop offset="0" stop-color="#FFF2CD"/><stop offset=".4" stop-color="#D4AF37"/><stop offset="1" stop-color="#8C6615"/></linearGradient></defs>
     <g fill="url(#g)"><path d="M124 112 H388 V142 H124 Z"/><path d="M146 180 L256 400 L366 180 L310 180 L256 296 L198 180 Z"/></g></svg>
-  <p class="eyebrow">CONFIRMED</p>
-  <h1>You're in.</h1>
-  <p>Your spot on the VALKR waitlist is confirmed. Your free Level Test is on its way to your inbox right now.</p>
+  <p class="eyebrow" data-de="BESTÄTIGT">CONFIRMED</p>
+  <h1 data-de="Du bist dabei.">You're in.</h1>
+  <p data-de="Dein Platz auf der VALKR-Warteliste steht. Dein Level-Test ist gerade unterwegs in dein Postfach.">Your spot on the VALKR waitlist is confirmed. Your free Level Test is on its way to your inbox right now.</p>
   <div class="card">
-    <p><b>Early access</b> — you hear from us 48 hours before everyone else.</p>
-    <p><b>Founding price</b> — reserved for the waitlist.</p>
-    <p><b>No spam</b> — max. two emails a month, unsubscribe anytime.</p>
+    <p data-de="&lt;b&gt;Frühzugang&lt;/b&gt; — du hörst 48 Stunden vor allen anderen von uns."><b>Early access</b> — you hear from us 48 hours before everyone else.</p>
+    <p data-de="&lt;b&gt;Gründerpreis&lt;/b&gt; — nur für die Warteliste."><b>Founding price</b> — reserved for the waitlist.</p>
+    <p data-de="&lt;b&gt;Kein Spam&lt;/b&gt; — höchstens zwei E-Mails im Monat, jederzeit abmeldbar."><b>No spam</b> — max. two emails a month, unsubscribe anytime.</p>
   </div>
-  <a class="back" href="./">&larr; Back to VALKR</a>
+  <a class="back" href="./" data-de="&larr; Zurück zu VALKR">&larr; Back to VALKR</a>
 </main>
 <footer>
   <a href="impressum.html">Impressum</a>
   <a href="datenschutz.html">Datenschutz</a>
 </footer>
+<script>
+/* Sprache aus der Wahl auf der Startseite. Kein Schalter hier: diese Seite
+   erreicht man nur ueber den Link in der Bestaetigungsmail, liest zehn Sekunden
+   und geht wieder -- ein Schalter waere ein Angebot, das niemand annimmt.
+   Faellt das Skript aus oder war der Besucher noch nie auf der Startseite,
+   bleibt es bei Englisch, so wie es im Quelltext steht. */
+(function(){
+  var w=null;try{w=localStorage.getItem('valkr_lang');}catch(e){}
+  if(w!=='de'){
+    /* Ohne frühere Wahl entscheidet die Browsersprache -- dieselbe Regel wie
+       auf der Startseite, damit beide Seiten nicht auseinanderlaufen. */
+    if(w)return;
+    var sp=(navigator.languages&&navigator.languages.length)?navigator.languages:[navigator.language||''];
+    var de=false;
+    for(var q=0;q<sp.length;q++){
+      var l=String(sp[q]||'').toLowerCase();
+      if(l.indexOf('de')===0){de=true;break;}
+      if(l.indexOf('en')===0)break;
+    }
+    if(!de)return;
+  }
+  document.documentElement.lang='de';
+  document.title='Bestätigt — VALKR';
+  [].forEach.call(document.querySelectorAll('[data-de]'),function(el){
+    el.innerHTML=el.getAttribute('data-de');
+  });
+})();
+</script>
 </body>
 </html>
