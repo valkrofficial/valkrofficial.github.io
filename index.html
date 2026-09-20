@@ -283,7 +283,19 @@
    Bestätigungs-Mail (Double-Opt-in) verschickt und die Einwilligung
    protokolliert. Auf valkr.de wird nichts gespeichert und nichts geloggt.
    HIER DEN ENDPUNKT EINTRAGEN (Brevo: beginnt mit https://…sibforms.com/serve/…). */
-var WAITLIST={endpoint:"https://fc7319c6.sibforms.com/serve/MUIFAOUG5Z7QwLbaF25kWWij9KA7AlBpLRRR4f7hHci0Kj_SXZKRmVCH1f7uhAHKwjD3CsqItL2rLc2QhBwTw15m0sSf9fAZA2rAP1mmu65ue1div61mLHld6YImWqWqyCXcO_NpaAwJXvJrfyIw63iPjJDKafQjNQw_6dWZyqhGZg-rIErpeXDPstCUOaP4CmnzHSV5wAY_fkaqlQ",emailField:'EMAIL',extra:{}};
+/* Die Adresse endet auf "==" -- das ist Base64-Auffuellung und gehoert dazu.
+   Genau die beiden Zeichen fehlten vom 20.09. bis zum 21.09.2026, weil sie
+   beim Herauskopieren aus Brevo an einem Muster haengenblieben, das nur
+   URL-Zeichen kannte. Brevo antwortete seitdem auf jede Anmeldung mit
+   {"success":false,"message":"Invalid token"} -- und weil die Seite blind
+   absendete (mode:'no-cors'), las der Besucher trotzdem "Fast geschafft".
+   Wer sie kuerzt, bricht die Warteliste lautlos. */
+var WAITLIST={endpoint:"https://fc7319c6.sibforms.com/serve/MUIFAOUG5Z7QwLbaF25kWWij9KA7AlBpLRRR4f7hHci0Kj_SXZKRmVCH1f7uhAHKwjD3CsqItL2rLc2QhBwTw15m0sSf9fAZA2rAP1mmu65ue1div61mLHld6YImWqWqyCXcO_NpaAwJXvJrfyIw63iPjJDKafQjNQw_6dWZyqhGZg-rIErpeXDPstCUOaP4CmnzHSV5wAY_fkaqlQ==",emailField:'EMAIL',
+  /* Dieselben verborgenen Felder, die Brevos eigenes Formular mitschickt:
+     email_address_check ist Brevos Honigtopf und muss LEER bleiben, locale
+     steuert die Sprache der Bestaetigungsmail (die Vorlage ist deutsch),
+     html_type sagt Brevo, dass keine JS-Antwortseite erwartet wird. */
+  extra:{email_address_check:'',locale:'de',html_type:'simple'}};
 (function(){
   var f=document.getElementById('wl');if(!f)return;
   var m=document.getElementById('wlmail'),ok=document.getElementById('wlok'),
@@ -308,9 +320,34 @@ var WAITLIST={endpoint:"https://fc7319c6.sibforms.com/serve/MUIFAOUG5Z7QwLbaF25k
     var fd=new FormData();fd.append(WAITLIST.emailField,v);
     for(var k in WAITLIST.extra)fd.append(k,WAITLIST.extra[k]);
     b.disabled=true;say(t('send'));
-    fetch(WAITLIST.endpoint,{method:'POST',body:fd,mode:'no-cors'})
-      .then(function(){f.reset();say(t('gut'),'ok');})
-      .catch(function(){say(t('weg'),'err');})
+    /* mode:'cors', NICHT 'no-cors'. Mit no-cors ist die Antwort blind: fetch
+       gilt als gelungen, egal was der Dienst sagt -- die Seite meldete
+       "Fast geschafft, bestaetige die E-Mail" auch dann, wenn Brevo die
+       Anmeldung mit 400 abgewiesen hatte. Genau das ist am 2026-09-21
+       aufgeflogen: der Endpunkt antwortete seit Tagen
+       {"success":false,"message":"Invalid token"}, und jede Anmeldung ging
+       lautlos verloren, waehrend der Besucher eine Bestaetigung las, die nie
+       kam. Brevo schickt access-control-allow-origin fuer valkr.de -- die
+       Antwort ist also lesbar, und eine Zusage darf nur stehen, wenn der
+       Dienst sie gegeben hat. */
+    fetch(WAITLIST.endpoint,{method:'POST',body:fd,mode:'cors'})
+      .then(function(r){
+        return r.json().then(function(j){return {ok:r.ok&&j&&j.success!==false,j:j};},
+          /* Kein JSON (Fehlerseite, Weiterleitung): am Status entscheiden. */
+          function(){return {ok:r.ok,j:null};});
+      })
+      .then(function(a){
+        if(a.ok){f.reset();say(t('gut'),'ok');return;}
+        /* Die Meldung des Dienstes gehoert nicht auf die Seite -- sie ist
+           englisch und technisch. In die Konsole gehoert sie sehr wohl:
+           ohne sie sucht man beim naechsten Mal wieder von vorn. */
+        if(window.console&&console.warn)console.warn('Warteliste abgelehnt:',a.j);
+        say(t('weg'),'err');
+      })
+      .catch(function(err){
+        if(window.console&&console.warn)console.warn('Warteliste nicht erreichbar:',err);
+        say(t('weg'),'err');
+      })
       .then(function(){b.disabled=false;});
   });
 })();
